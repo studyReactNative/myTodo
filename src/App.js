@@ -1,18 +1,23 @@
 import React from 'react';
 import styled, {ThemeProvider} from 'styled-components';
 import {theme} from './theme';
+import {StatusBar} from 'react-native';
 
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <Container>
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor={theme.background}
+        />
         <Title>TODO List</Title>
       </Container>
     </ThemeProvider>
   );
 }
 
-const Container = styled.View`
+const Container = styled.SafeAreaView`
   flex: 1;
   align-items: center;
   justify-content: flex-start;
