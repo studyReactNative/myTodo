@@ -2,6 +2,7 @@ import React from 'react';
 import styled, {ThemeProvider} from 'styled-components';
 import {theme} from './theme';
 import {StatusBar} from 'react-native';
+import Input from './components/Input';
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
           backgroundColor={theme.background}
         />
         <Title>TODO List</Title>
+        <Input />
       </Container>
     </ThemeProvider>
   );
