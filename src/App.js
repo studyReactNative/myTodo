@@ -5,7 +5,9 @@ import {theme} from './theme';
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Container></Container>
+      <Container>
+        <Title>TODO List</Title>
+      </Container>
     </ThemeProvider>
   );
 }
@@ -15,4 +17,12 @@ const Container = styled.View`
   align-items: center;
   justify-content: flex-start;
   background-color: ${({theme}) => theme.background};
+`;
+
+const Title = styled.Text`
+  align-self: flex-start;
+  margin: 0px 20px;
+  font-size: 40px;
+  font-weight: 600;
+  color: ${({theme}) => theme.main};
 `;
