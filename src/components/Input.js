@@ -1,14 +1,17 @@
 import React from 'react';
+import {useWindowDimensions} from 'react-native';
 import styled from 'styled-components';
 
 const Input = () => {
-  return <StyledInput />;
+  const width = useWindowDimensions().width;
+
+  return <StyledInput width={width} />;
 };
 
 export default Input;
 
 const StyledInput = styled.TextInput`
-  width: 100%;
+  width: ${({width}) => width - 40}px;
   height: 60px;
   margin: 3px 0;
   padding: 15px 20px;
