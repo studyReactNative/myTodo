@@ -4,15 +4,12 @@ import {theme} from './theme';
 import {Alert, StatusBar, useWindowDimensions} from 'react-native';
 import Input from './components/Input';
 import Task from './components/Task';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
   const width = useWindowDimensions().width;
   const [newTask, setNewTask] = useState('');
-  const [tasks, setTasks] = useState({
-    1: {id: 1, text: 'Hanbit', completed: false},
-    2: {id: 2, text: 'React Native', completed: true},
-    3: {id: 3, text: 'Sample', completed: false},
-  });
+  const [tasks, setTasks] = useState({});
 
   const addTask = () => {
     Alert.alert(`Add: ${newTask}`);
@@ -20,31 +17,40 @@ export default function App() {
     const newTaskObj = {
       [ID]: {id: ID, text: newTask, completed: false},
     };
-    setTasks({...tasks, ...newTaskObj});
+    saveTasks({...tasks, ...newTaskObj});
     setNewTask('');
   };
 
   const deleteTask = id => {
     const currentTasks = Object.assign({}, tasks);
     delete currentTasks[id];
-    setTasks(currentTasks);
+    saveTasks(currentTasks);
   };
 
   const toggleTask = id => {
     const currentTasks = Object.assign({}, tasks);
     currentTasks[id]['completed'] = !currentTasks[id]['completed'];
-    setTasks(currentTasks);
+    saveTasks(currentTasks);
   };
 
   const updateTask = item => {
     const currentTasks = Object.assign({}, tasks);
     currentTasks[item.id] = item;
-    setTasks(currentTasks);
+    saveTasks(currentTasks);
   };
 
   const onBlur = () => setNewTask('');
 
   const handleTextChange = text => setNewTask(text);
+
+  const saveTasks = async tasks => {
+    try {
+      await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+      setTasks(tasks);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
