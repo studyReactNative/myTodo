@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import styled, {ThemeProvider} from 'styled-components';
 import {theme} from './theme';
-import {StatusBar} from 'react-native';
+import {StatusBar, useWindowDimensions} from 'react-native';
 import Input from './components/Input';
 import Task from './components/Task';
 
 export default function App() {
+  const width = useWindowDimensions().width;
   const [newTask, setNewTask] = useState('');
 
   const addTask = () => {
@@ -29,7 +30,11 @@ export default function App() {
           onSubmitEditing={addTask}
           placeholder="+ Add a Task"
         />
-        <Task text="Hanbit" />
+        <List width={width}>
+          <Task text="Hanbit" />
+          <Task text="Hanbit" />
+          <Task text="Hanbit" />
+        </List>
       </Container>
     </ThemeProvider>
   );
@@ -48,4 +53,9 @@ const Title = styled.Text`
   font-size: 40px;
   font-weight: 600;
   color: ${({theme}) => theme.main};
+`;
+
+const List = styled.ScrollView`
+  flex: 1;
+  width: ${({width}) => width - 40};
 `;
