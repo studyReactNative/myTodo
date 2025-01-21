@@ -3,21 +3,15 @@ import {useWindowDimensions} from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const Input = ({placeholder, value, onChangeText, onSubmitEditing}) => {
+const Input = ({placeholder, value, onChangeText, onSubmitEditing, onBlur}) => {
   const width = useWindowDimensions().width;
-
-  Input.propTypes = {
-    placeholder: PropTypes.string,
-    value: PropTypes.string.isRequired,
-    onChangeText: PropTypes.func.isRequired,
-    onSubmitEditing: PropTypes.func.isRequired,
-  };
 
   return (
     <StyledInput
       value={value}
       onChangeText={onChangeText}
       onSubmitEditing={onSubmitEditing}
+      onBlur={onBlur}
       width={width}
       placeholder={placeholder}
       maxLength={50}
@@ -26,6 +20,14 @@ const Input = ({placeholder, value, onChangeText, onSubmitEditing}) => {
       returnKeyType="done"
     />
   );
+};
+
+Input.propTypes = {
+  placeholder: PropTypes.string,
+  value: PropTypes.string.isRequired,
+  onChangeText: PropTypes.func.isRequired,
+  onSubmitEditing: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
 };
 
 export default Input;

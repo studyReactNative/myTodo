@@ -25,11 +25,19 @@ const Task = ({item, deleteTask, toggleTask, updateTask}) => {
     }
   };
 
+  const onBlur = () => {
+    if (isEditing) {
+      setIsEditing(false);
+      setNewText(text);
+    }
+  };
+
   return isEditing ? (
     <Input
       value={newText}
       onChangeText={text => setNewText(text)}
       onSubmitEditing={onSubmitEditing}
+      onBlur={onBlur}
     />
   ) : (
     <View style={[styles.container, {backgroundColor: theme.itemBackground}]}>

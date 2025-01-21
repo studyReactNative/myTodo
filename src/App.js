@@ -42,6 +42,8 @@ export default function App() {
     setTasks(currentTasks);
   };
 
+  const onBlur = () => setNewTask('');
+
   const handleTextChange = text => setNewTask(text);
 
   return (
@@ -57,6 +59,7 @@ export default function App() {
           onChangeText={handleTextChange}
           onSubmitEditing={addTask}
           placeholder="+ Add a Task"
+          onBlur={onBlur}
         />
         <List width={width}>
           {Object.values(tasks)
