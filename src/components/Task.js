@@ -1,17 +1,37 @@
 import PropTypes from 'prop-types';
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {ThemeContext} from 'styled-components';
 import IconButton from './IconButton';
 import {images} from '../images';
+import Input from './Input';
 
-const Task = ({item, deleteTask, toggleTask}) => {
+const Task = ({item, deleteTask, toggleTask, updateTask}) => {
   const theme = useContext(ThemeContext);
   const id = item.id;
   const completed = item.completed;
   const text = item.text;
 
-  return (
+  const [isEditing, setIsEditing] = useState(false);
+  const [newText, setNewText] = useState(text);
+
+  const handleUpdateButton = () => setIsEditing(true);
+
+  const onSubmitEditing = () => {
+    if (isEditing) {
+      const editedTask = Object.assign({}, item, {text: newText});
+      setIsEditing(false);
+      updateTask(editedTask);
+    }
+  };
+
+  return isEditing ? (
+    <Input
+      value={newText}
+      onChangeText={text => setNewText(text)}
+      onSubmitEditing={onSubmitEditing}
+    />
+  ) : (
     <View style={[styles.container, {backgroundColor: theme.itemBackground}]}>
       <IconButton
         type={completed ? images.completed : images.uncompleted}
@@ -27,7 +47,9 @@ const Task = ({item, deleteTask, toggleTask}) => {
         ]}>
         {text}
       </Text>
-      {completed || <IconButton type={images.update} completed={completed} />}
+      {completed || (
+        <IconButton type={images.update} onPressOut={handleUpdateButton} />
+      )}
       <IconButton
         type={images.delete}
         id={id}

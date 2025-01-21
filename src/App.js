@@ -36,6 +36,12 @@ export default function App() {
     setTasks(currentTasks);
   };
 
+  const updateTask = item => {
+    const currentTasks = Object.assign({}, tasks);
+    currentTasks[item.id] = item;
+    setTasks(currentTasks);
+  };
+
   const handleTextChange = text => setNewTask(text);
 
   return (
@@ -61,6 +67,7 @@ export default function App() {
                 item={item}
                 deleteTask={deleteTask}
                 toggleTask={toggleTask}
+                updateTask={updateTask}
               />
             ))}
         </List>
