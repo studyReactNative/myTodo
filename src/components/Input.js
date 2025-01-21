@@ -1,8 +1,7 @@
 import React from 'react';
 import {useWindowDimensions} from 'react-native';
-import styled from 'styled-components';
-import propTypes from 'prop-types';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 const Input = ({placeholder, value, onChangeText, onSubmitEditing}) => {
   const width = useWindowDimensions().width;
