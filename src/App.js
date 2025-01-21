@@ -1,16 +1,26 @@
 import React, {useState} from 'react';
 import styled, {ThemeProvider} from 'styled-components';
 import {theme} from './theme';
-import {StatusBar, useWindowDimensions} from 'react-native';
+import {Alert, StatusBar, useWindowDimensions} from 'react-native';
 import Input from './components/Input';
 import Task from './components/Task';
 
 export default function App() {
   const width = useWindowDimensions().width;
   const [newTask, setNewTask] = useState('');
+  const [tasks, setTasks] = useState({
+    1: {id: 1, text: 'Hanbit', completed: false},
+    2: {id: 2, text: 'React Native', completed: true},
+    3: {id: 3, text: 'Sample', completed: false},
+  });
 
   const addTask = () => {
-    Alert(`Add: ${newTask}`);
+    Alert.alert(`Add: ${newTask}`);
+    const ID = Date.now();
+    const newTaskObj = {
+      ID: {id: ID, text: newTask, completed: false},
+    };
+    setTasks({...tasks, ...newTaskObj});
     setNewTask('');
   };
 
@@ -31,9 +41,11 @@ export default function App() {
           placeholder="+ Add a Task"
         />
         <List width={width}>
-          <Task text="Hanbit" />
-          <Task text="Hanbit" />
-          <Task text="Hanbit" />
+          {Object.values(tasks)
+            .reverse()
+            .map(item => (
+              <Task key={item.id} text={item.text} />
+            ))}
         </List>
       </Container>
     </ThemeProvider>
