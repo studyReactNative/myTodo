@@ -5,15 +5,35 @@ import {ThemeContext} from 'styled-components';
 import IconButton from './IconButton';
 import {images} from '../images';
 
-const Task = ({item, deleteTask}) => {
+const Task = ({item, deleteTask, toggleTask}) => {
   const theme = useContext(ThemeContext);
+  const id = item.id;
+  const completed = item.completed;
+  const text = item.text;
 
   return (
     <View style={[styles.container, {backgroundColor: theme.itemBackground}]}>
-      <IconButton type={images.uncompleted} />
-      <Text style={[styles.contents, {color: theme.text}]}>{item.text}</Text>
-      <IconButton type={images.update} />
-      <IconButton type={images.delete} id={item.id} onPressOut={deleteTask} />
+      <IconButton
+        type={completed ? images.completed : images.uncompleted}
+        id={id}
+        onPressOut={toggleTask}
+        completed={completed}
+      />
+      <Text
+        style={[
+          styles.contents,
+          {color: completed ? theme.done : theme.text},
+          {textDecorationLine: completed ? 'line-through' : 'none'},
+        ]}>
+        {text}
+      </Text>
+      {completed || <IconButton type={images.update} completed={completed} />}
+      <IconButton
+        type={images.delete}
+        id={id}
+        onPressOut={deleteTask}
+        completed={completed}
+      />
     </View>
   );
 };
@@ -21,6 +41,7 @@ const Task = ({item, deleteTask}) => {
 Task.propsTypes = {
   item: PropTypes.object.isRequired,
   deleteTask: PropTypes.func.isRequired,
+  toggleTask: PropTypes.func.isRequired,
 };
 
 export default Task;

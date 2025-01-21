@@ -30,6 +30,12 @@ export default function App() {
     setTasks(currentTasks);
   };
 
+  const toggleTask = id => {
+    const currentTasks = Object.assign({}, tasks);
+    currentTasks[id]['completed'] = !currentTasks[id]['completed'];
+    setTasks(currentTasks);
+  };
+
   const handleTextChange = text => setNewTask(text);
 
   return (
@@ -50,7 +56,12 @@ export default function App() {
           {Object.values(tasks)
             .reverse()
             .map(item => (
-              <Task key={item.id} item={item} deleteTask={deleteTask} />
+              <Task
+                key={item.id}
+                item={item}
+                deleteTask={deleteTask}
+                toggleTask={toggleTask}
+              />
             ))}
         </List>
       </Container>
