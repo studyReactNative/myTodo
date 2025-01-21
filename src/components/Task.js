@@ -5,21 +5,22 @@ import {ThemeContext} from 'styled-components';
 import IconButton from './IconButton';
 import {images} from '../images';
 
-const Task = ({text}) => {
+const Task = ({item, deleteTask}) => {
   const theme = useContext(ThemeContext);
 
   return (
     <View style={[styles.container, {backgroundColor: theme.itemBackground}]}>
       <IconButton type={images.uncompleted} />
-      <Text style={[styles.contents, {color: theme.text}]}>{text}</Text>
+      <Text style={[styles.contents, {color: theme.text}]}>{item.text}</Text>
       <IconButton type={images.update} />
-      <IconButton type={images.delete} />
+      <IconButton type={images.delete} id={item.id} onPressOut={deleteTask} />
     </View>
   );
 };
 
 Task.propsTypes = {
-  text: PropTypes.string.isRequired,
+  item: PropTypes.object.isRequired,
+  deleteTask: PropTypes.func.isRequired,
 };
 
 export default Task;

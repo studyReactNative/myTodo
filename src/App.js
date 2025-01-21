@@ -18,10 +18,16 @@ export default function App() {
     Alert.alert(`Add: ${newTask}`);
     const ID = Date.now();
     const newTaskObj = {
-      ID: {id: ID, text: newTask, completed: false},
+      [ID]: {id: ID, text: newTask, completed: false},
     };
     setTasks({...tasks, ...newTaskObj});
     setNewTask('');
+  };
+
+  const deleteTask = id => {
+    const currentTasks = Object.assign({}, tasks);
+    delete currentTasks[id];
+    setTasks(currentTasks);
   };
 
   const handleTextChange = text => setNewTask(text);
@@ -44,7 +50,7 @@ export default function App() {
           {Object.values(tasks)
             .reverse()
             .map(item => (
-              <Task key={item.id} text={item.text} />
+              <Task key={item.id} item={item} deleteTask={deleteTask} />
             ))}
         </List>
       </Container>

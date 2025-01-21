@@ -5,11 +5,11 @@ import styled from 'styled-components/native';
 import {images} from '../images';
 // import {ThemeContext} from 'styled-components';
 
-const IconButton = ({type, onPressOut}) => {
+const IconButton = ({type, onPressOut = () => {}, id}) => {
   // const theme = useContext(ThemeContext);
 
   return (
-    <Pressable hitSlop={10} onPressOut={onPressOut}>
+    <Pressable hitSlop={10} onPressOut={() => onPressOut(id)}>
       <Icon source={type} />
       {/* <Image source={type} style={[styles.icon, {tintColor: theme.text}]} /> */}
     </Pressable>
@@ -19,6 +19,7 @@ const IconButton = ({type, onPressOut}) => {
 IconButton.propTypes = {
   type: PropTypes.oneOf(Object.values(images)).isRequired,
   onPressOut: PropTypes.func,
+  id: PropTypes.number,
 };
 
 export default IconButton;
