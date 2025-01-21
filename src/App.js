@@ -3,6 +3,8 @@ import styled, {ThemeProvider} from 'styled-components';
 import {theme} from './theme';
 import {StatusBar} from 'react-native';
 import Input from './components/Input';
+import IconButton from './components/IconButton';
+import {images} from './images';
 
 export default function App() {
   const [newTask, setNewTask] = useState('');
@@ -28,6 +30,7 @@ export default function App() {
           onSubmitEditing={addTask}
           placeholder="+ Add a Task"
         />
+        <IconButton type={images.uncompleted} />
       </Container>
     </ThemeProvider>
   );
