@@ -1,13 +1,19 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled, {ThemeProvider} from 'styled-components';
 import {theme} from './theme';
-import {Alert, StatusBar, useWindowDimensions} from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  StatusBar,
+  useWindowDimensions,
+} from 'react-native';
 import Input from './components/Input';
 import Task from './components/Task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
   const width = useWindowDimensions().width;
+  const [isLoading, setIsLoading] = useState(false);
   const [newTask, setNewTask] = useState('');
   const [tasks, setTasks] = useState({});
 
@@ -52,35 +58,57 @@ export default function App() {
     }
   };
 
+  useEffect(() => {
+    try {
+      setIsLoading(true);
+      loadTasks();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+    }
+  }, []);
+
+  const loadTasks = async () => {
+    const loadedTasks = await AsyncStorage.getItem('tasks');
+    setTasks(JSON.parse(loadedTasks || '{}'));
+  };
+
   return (
     <ThemeProvider theme={theme}>
-      <Container>
-        <StatusBar
-          barStyle="light-content"
-          backgroundColor={theme.background}
-        />
-        <Title>TODO List</Title>
-        <Input
-          value={newTask}
-          onChangeText={handleTextChange}
-          onSubmitEditing={addTask}
-          placeholder="+ Add a Task"
-          onBlur={onBlur}
-        />
-        <List width={width}>
-          {Object.values(tasks)
-            .reverse()
-            .map(item => (
-              <Task
-                key={item.id}
-                item={item}
-                deleteTask={deleteTask}
-                toggleTask={toggleTask}
-                updateTask={updateTask}
-              />
-            ))}
-        </List>
-      </Container>
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#000" style={{flex: 1}} />
+      ) : (
+        <Container>
+          <StatusBar
+            barStyle="light-content"
+            backgroundColor={theme.background}
+          />
+          <Title>TODO List</Title>
+          <Input
+            value={newTask}
+            onChangeText={handleTextChange}
+            onSubmitEditing={addTask}
+            placeholder="+ Add a Task"
+            onBlur={onBlur}
+          />
+          <List width={width}>
+            {Object.values(tasks)
+              .reverse()
+              .map(item => (
+                <Task
+                  key={item.id}
+                  item={item}
+                  deleteTask={deleteTask}
+                  toggleTask={toggleTask}
+                  updateTask={updateTask}
+                />
+              ))}
+          </List>
+        </Container>
+      )}
     </ThemeProvider>
   );
 }
